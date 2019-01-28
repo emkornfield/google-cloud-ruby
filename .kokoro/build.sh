@@ -29,7 +29,7 @@ function set_failed_status {
 }
 
 if [ "$PACKAGE" = "post" ]; then
-    rbenv global ${RUBY_VERSIONS[-1]}
+    rbenv global ${RUBY_VERSIONS[2]}
     (bundle update && bundle exec rake kokoro:post) || set_failed_status
 elif [ "$JOB_TYPE" = "nightly" ]; then
     for version in "${RUBY_VERSIONS[@]}"; do
