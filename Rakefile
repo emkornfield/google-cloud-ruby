@@ -573,8 +573,6 @@ task :compile do
 end
 
 namespace :kokoro do
-  ruby_versions = ['2.3', '2.4', '2.5']
-
   desc "Generate configs for kokoro"
   task :build do
     generate_kokoro_configs
