@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-require "google/cloud/firestore/v1beta1"
+require "google/cloud/firestore/v1"
 require "google/cloud/firestore/convert"
 require "google/cloud/firestore/document_reference"
 require "google/cloud/firestore/document_snapshot"
@@ -77,9 +77,9 @@ module Google
               return value if value.is_a? String
               return value.string if value.is_a? StringIO
               if value.is_a? DocumentReference
-                return value.path.split("/".freeze)
+                return value.path.split "/".freeze
               end
-              return value.map { |v| field_comparison(v) } if value.is_a? Array
+              return value.map { |v| field_comparison v } if value.is_a? Array
               if value.is_a? Hash
                 geo_pairs = Convert.hash_is_geo_point? value
                 return geo_pairs.map(&:last) if geo_pairs

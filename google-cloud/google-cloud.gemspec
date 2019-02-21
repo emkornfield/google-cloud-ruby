@@ -18,7 +18,7 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = ">= 2.0.0"
 
-  
+
   gem.add_dependency "google-cloud-asset", "~> 0.1"
   gem.add_dependency "google-cloud-bigquery", "~> 1.1"
   gem.add_dependency "google-cloud-bigquery-data_transfer", "~> 0.1"
@@ -43,6 +43,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "google-cloud-spanner", "~> 1.3"
   gem.add_dependency "google-cloud-speech", "~> 0.29"
   gem.add_dependency "google-cloud-storage", "~> 1.10"
+  gem.add_dependency "google-cloud-talent", "~> 0.1"
   gem.add_dependency "google-cloud-tasks", "~> 0.2"
   gem.add_dependency "google-cloud-text_to_speech", "~> 0.1"
   gem.add_dependency "google-cloud-trace", "~> 0.31"
@@ -56,7 +57,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "minitest-rg", "~> 5.2"
   gem.add_development_dependency "autotest-suffix", "~> 1.1"
   gem.add_development_dependency "redcarpet", "~> 3.0"
-  gem.add_development_dependency "rubocop", "~> 0.61.0"
+  gem.add_development_dependency "rubocop", "~> 0.64.0"
   gem.add_development_dependency "simplecov", "~> 0.9"
   gem.add_development_dependency "yard", "~> 0.9"
   gem.add_development_dependency "yard-doctest", "~> 0.1.13"

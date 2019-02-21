@@ -1,5 +1,34 @@
 # Release History
 
+### 0.31.3 / 2019-02-13
+
+* Fix bug (typo) in retrieving default on_error proc.
+
+### 0.31.2 / 2019-02-09
+
+* Fix conversion code for ErrorEvent and Debugee.
+  * Prepare for changes in JSON serialization coming in
+    google-protobuf 3.7.
+
+### 0.31.1 / 2019-02-07
+
+* Update concurrent-ruby dependency
+
+### 0.31.0 / 2019-02-01
+
+* Add ErrorReporting on_error configuration.
+* Update asynchronous error reporting implementation:
+  * Add dependency on concurrent-ruby.
+* Fix for submitting error objects without backtrace.
+* Make use of Credentials#project_id
+  * Use Credentials#project_id
+    If a project_id is not provided, use the value on the Credentials object.
+    This value was added in googleauth 0.7.0.
+  * Loosen googleauth dependency
+    Allow for new releases up to 0.10.
+    The googleauth devs have committed to maintaining the current API
+    and will not make backwards compatible changes before 0.10.
+
 ### 0.30.5 / 2018-09-20
 
 * Update documentation.

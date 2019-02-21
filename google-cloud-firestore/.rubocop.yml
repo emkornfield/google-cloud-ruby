@@ -2,9 +2,9 @@ AllCops:
   Exclude:
     - "benchmark/**/*"
     - "google-cloud-firestore.gemspec"
-    - "lib/google/firestore/v1beta1/**/*"
-    - "lib/google/cloud/firestore/v1beta1/**/*"
-    - "lib/google/cloud/firestore/v1beta1.rb"
+    - "lib/google/firestore/v1*/**/*"
+    - "lib/google/cloud/firestore/v1*/**/*"
+    - "lib/google/cloud/firestore/v1*.rb"
     - "support/**/*"
     - "Rakefile"
     - "acceptance/**/*"
@@ -17,6 +17,11 @@ Documentation:
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+Style/MethodCallWithArgsParentheses:
+  Enabled: true
+  EnforcedStyle: omit_parentheses
+  AllowParenthesesInMultilineCall: true
+  AllowParenthesesInCamelCaseMethod: true
 Style/MethodDefParentheses:
   EnforcedStyle: require_no_parentheses
 Style/RescueModifier:

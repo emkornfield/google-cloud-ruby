@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-require "google/cloud/firestore/v1beta1"
+require "google/cloud/firestore/v1"
 require "google/cloud/firestore/document_reference"
 require "google/cloud/firestore/document_snapshot"
 require "google/cloud/firestore/query"
@@ -75,7 +75,7 @@ module Google
         ##
         # @private The parent path for the collection.
         def parent_path
-          path.split("/")[0...-1].join("/")
+          path.split("/")[0...-1].join "/"
         end
 
         # @!group Access

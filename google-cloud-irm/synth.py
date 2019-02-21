@@ -27,7 +27,6 @@ gapic = gcp.GAPICGenerator()
 v1alpha2 = gapic.ruby_library(
     'irm', 'v1alpha2',
     artman_output_name='google-cloud-ruby/google-cloud-irm',
-    private=True,
     config_path='artman_irm_v1alpha2.yaml'
 )
 s.copy(v1alpha2 / 'acceptance')
@@ -73,7 +72,7 @@ s.replace(
 s.replace(
     'google-cloud-irm.gemspec',
     'gem.add_development_dependency "rubocop".*$',
-    'gem.add_development_dependency "rubocop", "~> 0.61.0"'
+    'gem.add_development_dependency "rubocop", "~> 0.64.0"'
 )
 
 # Require the helpers file

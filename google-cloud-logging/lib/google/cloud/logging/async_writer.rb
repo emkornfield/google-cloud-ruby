@@ -382,7 +382,7 @@ module Google
                 @cond.wait
               else
                 # still waiting for the interval to publish the batch...
-                @cond.wait(@batch.publish_wait)
+                @cond.wait @batch.publish_wait
               end
             end
           end
@@ -409,7 +409,7 @@ module Google
         def default_error_callbacks
           # This is memoized to reduce calls to the configuration.
           @default_error_callbacks ||= begin
-            error_callback = Google::Cloud::Logging.configuration.on_error
+            error_callback = Google::Cloud::Logging.configure.on_error
             error_callback ||= Google::Cloud.configure.on_error
             if error_callback
               [error_callback]

@@ -1,5 +1,13 @@
 # Release History
 
+### 1.6.2 / 2019-02-13
+
+* Fix bug (typo) in retrieving default on_error proc.
+
+### 1.6.1 / 2019-02-07
+
+* Update concurrent-ruby dependency
+
 ### 1.6.0 / 2019-01-22
 
 * AsyncWriter buffer entries and make batch API calls
@@ -35,7 +43,7 @@
     This value was added in googleauth 0.7.0.
   * Loosen googleauth dependency
     Allow for new releases up to 0.10.
-    The googleauth devs have committed to maintanining the current API
+    The googleauth devs have committed to maintaining the current API
     and will not make backwards compatible changes before 0.10.
 * Direct logs for "/healthz" requests to the health check log.
 * Update documentation.
