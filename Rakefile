@@ -708,6 +708,19 @@ def update_ruby_versions
       f.write(docker_file.result(binding))
     end
   end
+  readme_text = ""
+  File.open("./README.md", "r+") do |f|
+    readme_text = f.read
+  end
+  earliest_ruby = ruby_versions.first.split(".")[0...-1].join(".")
+  ruby_version_text = "These libraries are currently supported on Ruby "
+  new_content = readme_text.gsub(
+    /#{ruby_version_text}(.*)\+/,
+    "#{ruby_version_text}#{earliest_ruby}+"
+  )
+  File.open("./README.md", "w") do |f|
+    f.write new_content
+  end
 end
 
 def gems
