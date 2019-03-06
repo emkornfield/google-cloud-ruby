@@ -32,7 +32,7 @@ module Google
   module Cloud
     module Talent
       module V4beta1
-        # A service handles company management, including CRUD and job enumeration.
+        # A service that handles company management, including CRUD and enumeration.
         #
         # @!attribute [r] company_service_stub
         #   @return [Google::Cloud::Talent::V4beta1::CompanyService::Stub]
@@ -313,9 +313,7 @@ module Google
             @get_company.call(req, options, &block)
           end
 
-          # Updates specified company. Company names can't be updated. To update a
-          # company name, delete the company and all jobs associated with it, and only
-          # then re-create them.
+          # Updates specified company.
           #
           # @param company [Google::Cloud::Talent::V4beta1::Company | Hash]
           #   Required.
@@ -327,11 +325,15 @@ module Google
           #   Optional but strongly recommended for the best service
           #   experience.
           #
-          #   If {Google::Cloud::Talent::V4beta1::UpdateCompanyRequest#update_mask update_mask} is provided, only the specified fields in
-          #   {Google::Cloud::Talent::V4beta1::UpdateCompanyRequest#company company} are updated. Otherwise all the fields are updated.
+          #   If
+          #   {Google::Cloud::Talent::V4beta1::UpdateCompanyRequest#update_mask update_mask}
+          #   is provided, only the specified fields in
+          #   {Google::Cloud::Talent::V4beta1::UpdateCompanyRequest#company company} are
+          #   updated. Otherwise all the fields are updated.
           #
           #   A field mask to specify the company fields to be updated. Only
-          #   top level fields of {Google::Cloud::Talent::V4beta1::Company Company} are supported.
+          #   top level fields of {Google::Cloud::Talent::V4beta1::Company Company} are
+          #   supported.
           #   A hash of the same form as `Google::Protobuf::FieldMask`
           #   can also be provided.
           # @param options [Google::Gax::CallOptions]
@@ -400,7 +402,7 @@ module Google
             nil
           end
 
-          # Lists all companies associated with the service account.
+          # Lists all companies associated with the project.
           #
           # @param parent [String]
           #   Required.
@@ -422,8 +424,9 @@ module Google
           #
           #   Defaults to false.
           #
-          #   If true, at most {Google::Cloud::Talent::V4beta1::ListCompaniesRequest#page_size page_size} of companies are fetched, among which
-          #   only those with open jobs are returned.
+          #   If true, at most
+          #   {Google::Cloud::Talent::V4beta1::ListCompaniesRequest#page_size page_size} of
+          #   companies are fetched, among which only those with open jobs are returned.
           # @param options [Google::Gax::CallOptions]
           #   Overrides the default settings for this call, e.g, timeout,
           #   retries, etc.
