@@ -5,6 +5,8 @@ require "erb"
 require "fileutils"
 require "timeout"
 
+SUPPORTED_RUBY_VERSIONS = ["2.3.8", "2.4.5", "2.5.3", "2.6.1"]
+
 task :bundleupdate do
   valid_gems.each do |gem|
     Dir.chdir gem do
@@ -545,6 +547,7 @@ namespace :kokoro do
   desc "Generate configs for kokoro"
   task :build do
     generate_kokoro_configs
+    update_ruby_versions
   end
 
   task :presubmit do
@@ -690,6 +693,20 @@ def generate_kokoro_configs
   File.open("./.kokoro/continuous/linux/#{gem}.cfg", "w") do |f|
     config = ERB.new(File.read("./.kokoro/templates/linux.cfg.erb"))
     f.write(config.result(binding))
+  end
+end
+
+def update_ruby_versions
+  ruby_versions = SUPPORTED_RUBY_VERSIONS
+  File.open("./.kokoro/build.sh", "w") do |f|
+    build_file = ERB.new(File.read("./.kokoro/templates/build.sh.erb"))
+    f.write(build_file.result(binding))
+  end
+  ["ruby-multi", "ruby-release"].each do |docker_image|
+    File.open("./.kokoro/docker/#{docker_image}/Dockerfile", "w") do |f|
+      docker_file = ERB.new(File.read("./.kokoro/templates/#{docker_image}.Dockerfile.erb"))
+      f.write(docker_file.result(binding))
+    end
   end
 end
 
