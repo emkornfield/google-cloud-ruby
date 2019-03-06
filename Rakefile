@@ -5,7 +5,7 @@ require "erb"
 require "fileutils"
 require "timeout"
 
-SUPPORTED_RUBY_VERSIONS = ["2.3.8", "2.4.5", "2.5.3", "2.6.1"]
+KOKORO_RUBY_VERSIONS = ["2.3.8", "2.4.5", "2.5.3", "2.6.1"]
 
 task :bundleupdate do
   valid_gems.each do |gem|
@@ -697,7 +697,7 @@ def generate_kokoro_configs
 end
 
 def update_ruby_versions
-  ruby_versions = SUPPORTED_RUBY_VERSIONS
+  ruby_versions = KOKORO_RUBY_VERSIONS
   File.open("./.kokoro/build.sh", "w") do |f|
     build_file = ERB.new(File.read("./.kokoro/templates/build.sh.erb"))
     f.write(build_file.result(binding))
