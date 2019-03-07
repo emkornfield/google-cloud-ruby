@@ -547,7 +547,8 @@ namespace :kokoro do
   desc "Generate configs for kokoro"
   task :build do
     generate_kokoro_configs
-    update_ruby_versions
+    update_kokoro_ruby_versions
+    update_supported_ruby_versions
   end
 
   task :presubmit do
@@ -696,7 +697,7 @@ def generate_kokoro_configs
   end
 end
 
-def update_ruby_versions
+def update_kokoro_ruby_versions
   ruby_versions = KOKORO_RUBY_VERSIONS
   File.open("./.kokoro/build.sh", "w") do |f|
     build_file = ERB.new(File.read("./.kokoro/templates/build.sh.erb"))
@@ -708,6 +709,9 @@ def update_ruby_versions
       f.write(docker_file.result(binding))
     end
   end
+end
+
+def update_supported_ruby_versions
   readme_text = ""
   File.open("./README.md", "r+") do |f|
     readme_text = f.read
