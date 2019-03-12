@@ -26,13 +26,13 @@ module Google
           return nil if str.nil?
           return str.map { |s| storage_class_for s } if str.is_a? Array
           { "durable_reduced_availability" => "DURABLE_REDUCED_AVAILABILITY",
-            "dra" => "DURABLE_REDUCED_AVAILABILITY",
-            "durable" => "DURABLE_REDUCED_AVAILABILITY",
-            "nearline" => "NEARLINE",
-            "coldline" => "COLDLINE",
-            "multi_regional" => "MULTI_REGIONAL",
-            "regional" => "REGIONAL",
-            "standard" => "STANDARD" }[str.to_s.downcase] || str.to_s
+            "dra"                          => "DURABLE_REDUCED_AVAILABILITY",
+            "durable"                      => "DURABLE_REDUCED_AVAILABILITY",
+            "nearline"                     => "NEARLINE",
+            "coldline"                     => "COLDLINE",
+            "multi_regional"               => "MULTI_REGIONAL",
+            "regional"                     => "REGIONAL",
+            "standard"                     => "STANDARD" }[str.to_s.downcase] || str.to_s
         end
       end
     end

@@ -305,7 +305,7 @@ module Google
                                          matches_storage_class,
                                          num_newer_versions)
               Google::Apis::StorageV1::Bucket::Lifecycle::Rule.new(
-                action: action_gapi(action, storage_class),
+                action:    action_gapi(action, storage_class),
                 condition: condition
               )
             end
@@ -321,11 +321,11 @@ module Google
             def condition_gapi age, created_before, is_live,
                                matches_storage_class, num_newer_versions
               Google::Apis::StorageV1::Bucket::Lifecycle::Rule::Condition.new(
-                age: age,
-                created_before: created_before,
-                is_live: is_live,
+                age:                   age,
+                created_before:        created_before,
+                is_live:               is_live,
                 matches_storage_class: Array(matches_storage_class),
-                num_newer_versions: num_newer_versions
+                num_newer_versions:    num_newer_versions
               )
             end
 
@@ -334,12 +334,12 @@ module Google
             def self.from_gapi gapi
               action = gapi.action
               c = gapi.condition
-              new action.type, storage_class: action.storage_class,
-                               age: c.age,
-                               created_before: c.created_before,
-                               is_live: c.is_live,
+              new action.type, storage_class:         action.storage_class,
+                               age:                   c.age,
+                               created_before:        c.created_before,
+                               is_live:               c.is_live,
                                matches_storage_class: c.matches_storage_class,
-                               num_newer_versions: c.num_newer_versions
+                               num_newer_versions:    c.num_newer_versions
             end
 
             # @private

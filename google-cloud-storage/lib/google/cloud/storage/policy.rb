@@ -184,11 +184,11 @@ module Google
         # Google::Apis::StorageV1::Policy.
         def to_gapi
           Google::Apis::StorageV1::Policy.new(
-            etag: etag,
+            etag:     etag,
             bindings: roles.keys.map do |role_name|
               next if roles[role_name].empty?
               Google::Apis::StorageV1::Policy::Binding.new(
-                role: role_name,
+                role:    role_name,
                 members: roles[role_name].uniq
               )
             end

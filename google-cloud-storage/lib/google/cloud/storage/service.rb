@@ -95,9 +95,9 @@ module Google
           execute do
             service.insert_bucket \
               @project, bucket_gapi,
-              predefined_acl: acl,
+              predefined_acl:                acl,
               predefined_default_object_acl: default_acl,
-              user_project: user_project(user_project)
+              user_project:                  user_project(user_project)
           end
         end
 
@@ -112,9 +112,9 @@ module Google
           execute do
             service.patch_bucket \
               bucket_name, bucket_gapi,
-              predefined_acl: predefined_acl,
+              predefined_acl:                predefined_acl,
               predefined_default_object_acl: predefined_default_acl,
-              user_project: user_project(user_project)
+              user_project:                  user_project(user_project)
           end
         end
 
@@ -242,11 +242,11 @@ module Google
                                 event_types: nil, prefix: nil, payload: nil,
                                 user_project: nil
           new_notification = Google::Apis::StorageV1::Notification.new(
-            { custom_attributes: custom_attrs,
-              event_types: event_types(event_types),
+            { custom_attributes:  custom_attrs,
+              event_types:        event_types(event_types),
               object_name_prefix: prefix,
-              payload_format: payload_format(payload),
-              topic: topic_path(topic_name) }.delete_if { |_k, v| v.nil? }
+              payload_format:     payload_format(payload),
+              topic:              topic_path(topic_name) }.delete_if { |_k, v| v.nil? }
           )
 
           execute do
@@ -323,9 +323,9 @@ module Google
           execute do
             service.get_object \
               bucket_name, file_path,
-              generation: generation,
+              generation:   generation,
               user_project: user_project(user_project),
-              options: key_options(key)
+              options:      key_options(key)
           end
         end
 
@@ -342,12 +342,12 @@ module Google
               source_bucket_name, source_file_path,
               destination_bucket_name, destination_file_path,
               file_gapi,
-              destination_kms_key_name: destination_kms_key,
+              destination_kms_key_name:   destination_kms_key,
               destination_predefined_acl: acl,
-              source_generation: generation,
-              rewrite_token: token,
-              user_project: user_project(user_project),
-              options: key_options
+              source_generation:          generation,
+              rewrite_token:              token,
+              user_project:               user_project(user_project),
+              options:                    key_options
           end
         end
 
@@ -358,15 +358,15 @@ module Google
 
           compose_req = Google::Apis::StorageV1::ComposeRequest.new \
             source_objects: compose_file_source_objects(source_files),
-            destination: destination_gapi
+            destination:    destination_gapi
 
           execute do
             service.compose_object \
               bucket_name, destination_path,
               compose_req,
               destination_predefined_acl: acl,
-              user_project: user_project(user_project),
-              options: key_options(key)
+              user_project:               user_project(user_project),
+              options:                    key_options(key)
           end
         end
 
@@ -402,7 +402,7 @@ module Google
             service.patch_object \
               bucket_name, file_path, file_gapi,
               predefined_acl: predefined_acl,
-              user_project: user_project(user_project)
+              user_project:   user_project(user_project)
           end
         end
 
@@ -412,7 +412,7 @@ module Google
                         user_project: nil
           execute do
             service.delete_object bucket_name, file_path,
-                                  generation: generation,
+                                  generation:   generation,
                                   user_project: user_project(user_project)
           end
         end
@@ -479,9 +479,7 @@ module Google
 
         def rewrite_key_options source_key, destination_key
           options = {}
-          if source_key
-            encryption_key_headers options, source_key, copy_source: true
-          end
+          encryption_key_headers options, source_key, copy_source: true if source_key
           encryption_key_headers options, destination_key if destination_key
           options
         end
@@ -527,17 +525,17 @@ module Google
 
         # Pub/Sub notification subscription event_types
         def event_type str
-          { "object_finalize" => "OBJECT_FINALIZE",
-            "finalize" => "OBJECT_FINALIZE",
-            "create" => "OBJECT_FINALIZE",
+          { "object_finalize"        => "OBJECT_FINALIZE",
+            "finalize"               => "OBJECT_FINALIZE",
+            "create"                 => "OBJECT_FINALIZE",
             "object_metadata_update" => "OBJECT_METADATA_UPDATE",
-            "object_update" => "OBJECT_METADATA_UPDATE",
-            "metadata_update" => "OBJECT_METADATA_UPDATE",
-            "update" => "OBJECT_METADATA_UPDATE",
-            "object_delete" => "OBJECT_DELETE",
-            "delete" => "OBJECT_DELETE",
-            "object_archive" => "OBJECT_ARCHIVE",
-            "archive" => "OBJECT_ARCHIVE" }[str.to_s.downcase]
+            "object_update"          => "OBJECT_METADATA_UPDATE",
+            "metadata_update"        => "OBJECT_METADATA_UPDATE",
+            "update"                 => "OBJECT_METADATA_UPDATE",
+            "object_delete"          => "OBJECT_DELETE",
+            "delete"                 => "OBJECT_DELETE",
+            "object_archive"         => "OBJECT_ARCHIVE",
+            "archive"                => "OBJECT_ARCHIVE" }[str.to_s.downcase]
         end
 
         # Pub/Sub notification subscription payload_format
@@ -545,17 +543,17 @@ module Google
         def payload_format str_or_bool
           return "JSON_API_V1" if str_or_bool.nil?
           { "json_api_v1" => "JSON_API_V1",
-            "json" => "JSON_API_V1",
-            "true" => "JSON_API_V1",
-            "none" => "NONE",
-            "false" => "NONE" }[str_or_bool.to_s.downcase]
+            "json"        => "JSON_API_V1",
+            "true"        => "JSON_API_V1",
+            "none"        => "NONE",
+            "false"       => "NONE" }[str_or_bool.to_s.downcase]
         end
 
         def compose_file_source_objects source_files
           source_files.map do |file|
             if file.is_a? Google::Cloud::Storage::File
               Google::Apis::StorageV1::ComposeRequest::SourceObject.new \
-                name: file.name,
+                name:       file.name,
                 generation: file.generation
             else
               Google::Apis::StorageV1::ComposeRequest::SourceObject.new \

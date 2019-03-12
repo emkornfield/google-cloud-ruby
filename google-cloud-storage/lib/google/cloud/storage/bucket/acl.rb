@@ -33,20 +33,20 @@ module Google
         #
         class Acl
           # @private
-          RULES = { "authenticatedRead" => "authenticatedRead",
-                    "auth" => "authenticatedRead",
-                    "auth_read" => "authenticatedRead",
-                    "authenticated" => "authenticatedRead",
+          RULES = { "authenticatedRead"  => "authenticatedRead",
+                    "auth"               => "authenticatedRead",
+                    "auth_read"          => "authenticatedRead",
+                    "authenticated"      => "authenticatedRead",
                     "authenticated_read" => "authenticatedRead",
-                    "private" => "private",
-                    "projectPrivate" => "projectPrivate",
-                    "proj_private" => "projectPrivate",
-                    "project_private" => "projectPrivate",
-                    "publicRead" => "publicRead",
-                    "public" => "publicRead",
-                    "public_read" => "publicRead",
-                    "publicReadWrite" => "publicReadWrite",
-                    "public_write" => "publicReadWrite" }.freeze
+                    "private"            => "private",
+                    "projectPrivate"     => "projectPrivate",
+                    "proj_private"       => "projectPrivate",
+                    "project_private"    => "projectPrivate",
+                    "publicRead"         => "publicRead",
+                    "public"             => "publicRead",
+                    "public_read"        => "publicRead",
+                    "publicReadWrite"    => "publicReadWrite",
+                    "public_write"       => "publicReadWrite" }.freeze
 
           ##
           # A boolean value or a project ID string to indicate the project to
@@ -198,7 +198,7 @@ module Google
             gapi = @service.insert_bucket_acl @bucket, entity, "OWNER",
                                               user_project: user_project
             entity = gapi.entity
-            @owners.push entity unless @owners.nil?
+            @owners&.push entity
             entity
           end
 
@@ -243,7 +243,7 @@ module Google
             gapi = @service.insert_bucket_acl @bucket, entity, "WRITER",
                                               user_project: user_project
             entity = gapi.entity
-            @writers.push entity unless @writers.nil?
+            @writers&.push entity
             entity
           end
 
@@ -288,7 +288,7 @@ module Google
             gapi = @service.insert_bucket_acl @bucket, entity, "READER",
                                               user_project: user_project
             entity = gapi.entity
-            @readers.push entity unless @readers.nil?
+            @readers&.push entity
             entity
           end
 
@@ -323,9 +323,9 @@ module Google
           def delete entity
             @service.delete_bucket_acl @bucket, entity,
                                        user_project: user_project
-            @owners.delete entity  unless @owners.nil?
-            @writers.delete entity unless @writers.nil?
-            @readers.delete entity unless @readers.nil?
+            @owners&.delete entity
+            @writers&.delete entity
+            @readers&.delete entity
             true
           end
 
@@ -439,7 +439,7 @@ module Google
 
           def update_predefined_acl! acl_role
             @service.patch_bucket @bucket, predefined_acl: acl_role,
-                                           user_project: user_project
+                                           user_project:   user_project
             clear!
           end
 
@@ -466,21 +466,21 @@ module Google
         #
         class DefaultAcl
           # @private
-          RULES = { "authenticatedRead" => "authenticatedRead",
-                    "auth" => "authenticatedRead",
-                    "auth_read" => "authenticatedRead",
-                    "authenticated" => "authenticatedRead",
-                    "authenticated_read" => "authenticatedRead",
+          RULES = { "authenticatedRead"      => "authenticatedRead",
+                    "auth"                   => "authenticatedRead",
+                    "auth_read"              => "authenticatedRead",
+                    "authenticated"          => "authenticatedRead",
+                    "authenticated_read"     => "authenticatedRead",
                     "bucketOwnerFullControl" => "bucketOwnerFullControl",
-                    "owner_full" => "bucketOwnerFullControl",
-                    "bucketOwnerRead" => "bucketOwnerRead",
-                    "owner_read" => "bucketOwnerRead",
-                    "private" => "private",
-                    "projectPrivate" => "projectPrivate",
-                    "project_private" => "projectPrivate",
-                    "publicRead" => "publicRead",
-                    "public" => "publicRead",
-                    "public_read" => "publicRead" }.freeze
+                    "owner_full"             => "bucketOwnerFullControl",
+                    "bucketOwnerRead"        => "bucketOwnerRead",
+                    "owner_read"             => "bucketOwnerRead",
+                    "private"                => "private",
+                    "projectPrivate"         => "projectPrivate",
+                    "project_private"        => "projectPrivate",
+                    "publicRead"             => "publicRead",
+                    "public"                 => "publicRead",
+                    "public_read"            => "publicRead" }.freeze
 
           ##
           # A boolean value or a project ID string to indicate the project to
@@ -614,7 +614,7 @@ module Google
             gapi = @service.insert_default_acl @bucket, entity, "OWNER",
                                                user_project: user_project
             entity = gapi.entity
-            @owners.push entity unless @owners.nil?
+            @owners&.push entity
             entity
           end
 
@@ -657,7 +657,7 @@ module Google
             gapi = @service.insert_default_acl @bucket, entity, "READER",
                                                user_project: user_project
             entity = gapi.entity
-            @readers.push entity unless @readers.nil?
+            @readers&.push entity
             entity
           end
 
@@ -690,8 +690,8 @@ module Google
           def delete entity
             @service.delete_default_acl @bucket, entity,
                                         user_project: user_project
-            @owners.delete entity  unless @owners.nil?
-            @readers.delete entity unless @readers.nil?
+            @owners&.delete entity
+            @readers&.delete entity
             true
           end
 
@@ -823,7 +823,7 @@ module Google
 
           def update_predefined_default_acl! acl_role
             @service.patch_bucket @bucket, predefined_default_acl: acl_role,
-                                           user_project: user_project
+                                           user_project:           user_project
             clear!
           end
 

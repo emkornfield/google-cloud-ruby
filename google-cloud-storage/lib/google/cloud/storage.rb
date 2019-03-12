@@ -85,9 +85,7 @@ module Google
           credentials = Storage::Credentials.new credentials, scope: scope
         end
 
-        if credentials.respond_to? :project_id
-          project_id ||= credentials.project_id
-        end
+        project_id ||= credentials.project_id if credentials.respond_to? :project_id
         project_id = project_id.to_s # Always cast to a string
         raise ArgumentError, "project_id is missing" if project_id.empty?
 

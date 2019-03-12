@@ -293,7 +293,7 @@ module Google
         # @see https://cloud.google.com/storage/docs/access-logs Access Logs
         #
         def logging_bucket
-          @gapi.logging.log_bucket if @gapi.logging
+          @gapi.logging&.log_bucket
         end
 
         ##
@@ -317,7 +317,7 @@ module Google
         # @return [String]
         #
         def logging_prefix
-          @gapi.logging.log_object_prefix if @gapi.logging
+          @gapi.logging&.log_object_prefix
         end
 
         ##
@@ -373,7 +373,7 @@ module Google
         # @return [Boolean]
         #
         def versioning?
-          @gapi.versioning.enabled? unless @gapi.versioning.nil?
+          @gapi.versioning&.enabled?
         end
 
         ##
@@ -403,7 +403,7 @@ module Google
         # @return [String] The main page suffix.
         #
         def website_main
-          @gapi.website.main_page_suffix if @gapi.website
+          @gapi.website&.main_page_suffix
         end
 
         ##
@@ -430,7 +430,7 @@ module Google
         # @return [String]
         #
         def website_404
-          @gapi.website.not_found_page if @gapi.website
+          @gapi.website&.not_found_page
         end
 
         ##
@@ -479,7 +479,7 @@ module Google
         #   the bucket.
         #
         def requester_pays
-          @gapi.billing.requester_pays if @gapi.billing
+          @gapi.billing&.requester_pays
         end
         alias requester_pays? requester_pays
 
@@ -531,7 +531,7 @@ module Google
         #   bucket.default_kms_key #=> kms_key_name
         #
         def default_kms_key
-          @gapi.encryption && @gapi.encryption.default_kms_key_name
+          @gapi.encryption&.default_kms_key_name
         end
 
         ##
@@ -570,7 +570,7 @@ module Google
         #   retention policy exists for the bucket.
         #
         def retention_period
-          @gapi.retention_policy && @gapi.retention_policy.retention_period
+          @gapi.retention_policy&.retention_period
         end
 
         ##
@@ -629,7 +629,7 @@ module Google
         #   policy, if a policy exists.
         #
         def retention_effective_at
-          @gapi.retention_policy && @gapi.retention_policy.effective_time
+          @gapi.retention_policy&.effective_time
         end
 
         ##
@@ -787,8 +787,7 @@ module Google
         #   bucket.policy_only? # true
         #
         def policy_only?
-          return false unless @gapi.iam_configuration &&
-                              @gapi.iam_configuration.bucket_policy_only
+          return false unless @gapi.iam_configuration&.bucket_policy_only
           !@gapi.iam_configuration.bucket_policy_only.enabled.nil? &&
             @gapi.iam_configuration.bucket_policy_only.enabled
         end
@@ -821,7 +820,7 @@ module Google
         def policy_only= new_policy_only
           @gapi.iam_configuration ||= API::Bucket::IamConfiguration.new \
             bucket_policy_only: \
-              API::Bucket::IamConfiguration::BucketPolicyOnly.new
+                                API::Bucket::IamConfiguration::BucketPolicyOnly.new
           @gapi.iam_configuration.bucket_policy_only.enabled = new_policy_only
           patch_gapi! :iam_configuration
         end
@@ -849,8 +848,7 @@ module Google
         #   puts bucket.policy_only_locked_at
         #
         def policy_only_locked_at
-          return nil unless @gapi.iam_configuration &&
-                            @gapi.iam_configuration.bucket_policy_only
+          return nil unless @gapi.iam_configuration&.bucket_policy_only
           @gapi.iam_configuration.bucket_policy_only.locked_time
         end
 
@@ -1024,11 +1022,11 @@ module Google
           ensure_service!
           if skip_lookup
             return File.new_lazy name, path, service,
-                                 generation: generation,
+                                 generation:   generation,
                                  user_project: user_project
           end
-          gapi = service.get_file name, path, generation: generation,
-                                              key: encryption_key,
+          gapi = service.get_file name, path, generation:   generation,
+                                              key:          encryption_key,
                                               user_project: user_project
           File.from_gapi gapi, service, user_project: user_project
         rescue Google::Cloud::NotFoundError
@@ -1331,12 +1329,10 @@ module Google
         def compose sources, destination, acl: nil, encryption_key: nil
           ensure_service!
           sources = Array sources
-          if sources.size < 2
-            raise ArgumentError, "must provide at least two source files"
-          end
+          raise ArgumentError, "must provide at least two source files" if sources.size < 2
 
-          options = { acl: File::Acl.predefined_rule_for(acl),
-                      key: encryption_key,
+          options = { acl:          File::Acl.predefined_rule_for(acl),
+                      key:          encryption_key,
                       user_project: user_project }
           destination_gapi = nil
           if block_given?

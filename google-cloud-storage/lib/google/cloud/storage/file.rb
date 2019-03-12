@@ -190,7 +190,7 @@ module Google
         # @return [Integer]
         #
         def size
-          @gapi.size.to_i if @gapi.size
+          @gapi.size&.to_i
         end
 
         ##
@@ -734,8 +734,8 @@ module Google
         #
         def generations
           ensure_service!
-          gapi = service.list_files bucket, prefix: name,
-                                            versions: true,
+          gapi = service.list_files bucket, prefix:       name,
+                                            versions:     true,
                                             user_project: user_project
           File::List.from_gapi gapi, service, bucket, name, nil, nil, true,
                                user_project: user_project
@@ -1202,9 +1202,7 @@ module Google
             updater = Updater.new gapi
             yield updater
             updater.check_for_changed_metadata!
-            if updater.updates.any?
-              update_gapi = gapi_from_attrs updater.updates
-            end
+            update_gapi = gapi_from_attrs updater.updates if updater.updates.any?
           end
 
           new_gapi = rewrite_gapi bucket, name, update_gapi,
@@ -1288,9 +1286,9 @@ module Google
         #
         def rotate encryption_key: nil, new_encryption_key: nil,
                    new_kms_key: nil
-          rewrite bucket, name, encryption_key: encryption_key,
+          rewrite bucket, name, encryption_key:     encryption_key,
                                 new_encryption_key: new_encryption_key,
-                                new_kms_key: new_kms_key
+                                new_kms_key:        new_kms_key
         end
 
         ##
@@ -1341,7 +1339,7 @@ module Google
         def delete generation: nil
           generation = self.generation if generation == true
           ensure_service!
-          service.delete_file bucket, name, generation: generation,
+          service.delete_file bucket, name, generation:   generation,
                                             user_project: user_project
           true
         end
@@ -1582,7 +1580,7 @@ module Google
         def reload! generation: nil
           generation = self.generation if generation == true
           ensure_service!
-          @gapi = service.get_file bucket, name, generation: generation,
+          @gapi = service.get_file bucket, name, generation:   generation,
                                                  user_project: user_project
           # If NotFound then lazy will never be unset
           @lazy = nil

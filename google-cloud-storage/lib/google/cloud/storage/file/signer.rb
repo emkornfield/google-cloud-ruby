@@ -117,9 +117,7 @@ module Google
           end
 
           def generate_signature signing_key, secret
-            unless signing_key.respond_to? :sign
-              signing_key = OpenSSL::PKey::RSA.new signing_key
-            end
+            signing_key = OpenSSL::PKey::RSA.new signing_key unless signing_key.respond_to? :sign
             signature = signing_key.sign OpenSSL::Digest::SHA256.new, secret
             Base64.strict_encode64(signature).delete "\n"
           end
@@ -129,10 +127,8 @@ module Google
               "&Expires=#{expires}" \
               "&Signature=#{url_escape signed_string}"
 
-            if query
-              query.each do |name, value|
-                url << "&#{url_escape name}=#{url_escape value}"
-              end
+            query&.each do |name, value|
+              url << "&#{url_escape name}=#{url_escape value}"
             end
 
             url

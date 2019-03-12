@@ -34,21 +34,21 @@ module Google
         #
         class Acl
           # @private
-          RULES = { "authenticatedRead" => "authenticatedRead",
-                    "auth" => "authenticatedRead",
-                    "auth_read" => "authenticatedRead",
-                    "authenticated" => "authenticatedRead",
-                    "authenticated_read" => "authenticatedRead",
+          RULES = { "authenticatedRead"      => "authenticatedRead",
+                    "auth"                   => "authenticatedRead",
+                    "auth_read"              => "authenticatedRead",
+                    "authenticated"          => "authenticatedRead",
+                    "authenticated_read"     => "authenticatedRead",
                     "bucketOwnerFullControl" => "bucketOwnerFullControl",
-                    "owner_full" => "bucketOwnerFullControl",
-                    "bucketOwnerRead" => "bucketOwnerRead",
-                    "owner_read" => "bucketOwnerRead",
-                    "private" => "private",
-                    "projectPrivate" => "projectPrivate",
-                    "project_private" => "projectPrivate",
-                    "publicRead" => "publicRead",
-                    "public" => "publicRead",
-                    "public_read" => "publicRead" }.freeze
+                    "owner_full"             => "bucketOwnerFullControl",
+                    "bucketOwnerRead"        => "bucketOwnerRead",
+                    "owner_read"             => "bucketOwnerRead",
+                    "private"                => "private",
+                    "projectPrivate"         => "projectPrivate",
+                    "project_private"        => "projectPrivate",
+                    "publicRead"             => "publicRead",
+                    "public"                 => "publicRead",
+                    "public_read"            => "publicRead" }.freeze
 
           ##
           # A boolean value or a project ID string to indicate the project to
@@ -187,10 +187,10 @@ module Google
           #
           def add_owner entity, generation: nil
             gapi = @service.insert_file_acl @bucket, @file, entity, "OWNER",
-                                            generation: generation,
+                                            generation:   generation,
                                             user_project: user_project
             entity = gapi.entity
-            @owners.push entity unless @owners.nil?
+            @owners&.push entity
             entity
           end
 
@@ -238,10 +238,10 @@ module Google
           #
           def add_reader entity, generation: nil
             gapi = @service.insert_file_acl @bucket, @file, entity, "READER",
-                                            generation: generation,
+                                            generation:   generation,
                                             user_project: user_project
             entity = gapi.entity
-            @readers.push entity unless @readers.nil?
+            @readers&.push entity
             entity
           end
 
@@ -281,8 +281,8 @@ module Google
             @service.delete_file_acl \
               @bucket, @file, entity,
               generation: generation, user_project: user_project
-            @owners.delete entity  unless @owners.nil?
-            @readers.delete entity unless @readers.nil?
+            @owners&.delete entity
+            @readers&.delete entity
             true
           end
 
@@ -422,7 +422,7 @@ module Google
             patched_file = Google::Apis::StorageV1::Object.new acl: []
             @service.patch_file @bucket, @file, patched_file,
                                 predefined_acl: acl_role,
-                                user_project: user_project
+                                user_project:   user_project
             clear!
           end
 

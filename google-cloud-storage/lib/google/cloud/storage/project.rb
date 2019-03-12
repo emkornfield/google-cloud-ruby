@@ -355,7 +355,7 @@ module Google
                           website_main: nil, website_404: nil, versioning: nil,
                           requester_pays: nil, user_project: nil
           new_bucket = Google::Apis::StorageV1::Bucket.new({
-            name: bucket_name,
+            name:     bucket_name,
             location: location
           }.delete_if { |_, v| v.nil? })
           storage_class = storage_class_for storage_class

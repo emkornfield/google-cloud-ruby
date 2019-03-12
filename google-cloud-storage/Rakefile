@@ -28,7 +28,7 @@ end
 
 # Acceptance tests
 desc "Run the storage acceptance tests."
-task :acceptance, :project, :keyfile do |t, args|
+task :acceptance, :project, :keyfile do |_t, args|
   project = args[:project]
   project ||= ENV["STORAGE_TEST_PROJECT"] || ENV["GCLOUD_TEST_PROJECT"]
   keyfile = args[:keyfile]
@@ -39,7 +39,7 @@ task :acceptance, :project, :keyfile do |t, args|
     keyfile ||= ENV["STORAGE_TEST_KEYFILE_JSON"] || ENV["GCLOUD_TEST_KEYFILE_JSON"]
   end
   if project.nil? || keyfile.nil?
-    fail "You must provide a project and keyfile. e.g. rake acceptance[test123, /path/to/keyfile.json] or STORAGE_TEST_PROJECT=test123 STORAGE_TEST_KEYFILE=/path/to/keyfile.json rake acceptance"
+    raise "You must provide a project and keyfile. e.g. rake acceptance[test123, /path/to/keyfile.json] or STORAGE_TEST_PROJECT=test123 STORAGE_TEST_KEYFILE=/path/to/keyfile.json rake acceptance"
   end
   # clear any env var already set
   require "google/cloud/storage/credentials"
@@ -63,7 +63,7 @@ end
 
 namespace :acceptance do
   desc "Run tests with coverage."
-  task :coverage, :project, :keyfile do |t, args|
+  task :coverage, :project, :keyfile do |_t, _args|
     require "simplecov"
     SimpleCov.start do
       command_name "google-cloud-storage"
@@ -75,7 +75,7 @@ namespace :acceptance do
   end
 
   desc "Removes *ALL* buckets and files. Use with caution."
-  task :cleanup do |t, args|
+  task :cleanup do |_t, args|
     project = args[:project]
     project ||= ENV["STORAGE_TEST_PROJECT"] || ENV["GCLOUD_TEST_PROJECT"]
     keyfile = args[:keyfile]
@@ -86,7 +86,7 @@ namespace :acceptance do
       keyfile ||= ENV["STORAGE_TEST_KEYFILE_JSON"] || ENV["GCLOUD_TEST_KEYFILE_JSON"]
     end
     if project.nil? || keyfile.nil?
-      fail "You must provide a project and keyfile. e.g. rake acceptance:cleanup[test123, /path/to/keyfile.json] or STORAGE_TEST_PROJECT=test123 STORAGE_TEST_KEYFILE=/path/to/keyfile.json rake acceptance:cleanup"
+      raise "You must provide a project and keyfile. e.g. rake acceptance:cleanup[test123, /path/to/keyfile.json] or STORAGE_TEST_PROJECT=test123 STORAGE_TEST_KEYFILE=/path/to/keyfile.json rake acceptance:cleanup"
     end
     # clear any env var already set
     require "google/cloud/storage/credentials"
@@ -112,7 +112,7 @@ namespace :acceptance do
         # Add one second delay between bucket deletes to avoid rate limiting errors
         sleep 1
         b.delete
-      rescue => e
+      rescue StandardError => e
         puts "Error while cleaning up bucket #{b.name}\n\n#{e}"
       end
     end
@@ -139,7 +139,9 @@ task :console do
   $LOAD_PATH.unshift "lib"
 
   require "google-cloud-storage"
-  def gcloud; @gcloud ||= Google::Cloud.new; end
+  def gcloud
+    @gcloud ||= Google::Cloud.new
+  end
 
   ARGV.clear
   IRB.start
@@ -176,7 +178,7 @@ namespace :ci do
   end
 end
 
-task :default => :test
+task default: :test
 
 def header str, token = "#"
   line_length = str.length + 8

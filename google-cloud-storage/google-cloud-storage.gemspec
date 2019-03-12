@@ -1,5 +1,4 @@
-# -*- encoding: utf-8 -*-
-require File.expand_path("../lib/google/cloud/storage/version", __FILE__)
+require File.expand_path("lib/google/cloud/storage/version", __dir__)
 
 Gem::Specification.new do |gem|
   gem.name          = "google-cloud-storage"
@@ -18,16 +17,16 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = ">= 2.0.0"
 
-  gem.add_dependency "google-cloud-core", "~> 1.2"
-  gem.add_dependency "google-api-client", "~> 0.26"
-  gem.add_dependency "googleauth", ">= 0.6.2", "< 0.10.0"
   gem.add_dependency "digest-crc", "~> 0.4"
+  gem.add_dependency "google-api-client", "~> 0.26"
+  gem.add_dependency "google-cloud-core", "~> 1.2"
+  gem.add_dependency "googleauth", ">= 0.6.2", "< 0.10.0"
 
+  gem.add_development_dependency "autotest-suffix", "~> 1.1"
   gem.add_development_dependency "minitest", "~> 5.10"
   gem.add_development_dependency "minitest-autotest", "~> 1.0"
   gem.add_development_dependency "minitest-focus", "~> 1.1"
   gem.add_development_dependency "minitest-rg", "~> 5.2"
-  gem.add_development_dependency "autotest-suffix", "~> 1.1"
   gem.add_development_dependency "redcarpet", "~> 3.0"
   gem.add_development_dependency "rubocop", "~> 0.64.0"
   gem.add_development_dependency "simplecov", "~> 0.9"
