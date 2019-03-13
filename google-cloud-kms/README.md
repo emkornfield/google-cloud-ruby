@@ -1,4 +1,4 @@
-# Ruby Client for Cloud Key Management Service (KMS) API ([Beta](https://github.com/googleapis/google-cloud-ruby#versioning))
+# Ruby Client for Cloud Key Management Service (KMS) API ([GA](https://github.com/googleapis/google-cloud-ruby#versioning))
 
 [Cloud Key Management Service (KMS) API][Product Documentation]:
 Manages keys and performs cryptographic operations in a central cloud
@@ -18,6 +18,27 @@ steps:
 ### Installation
 ```
 $ gem install google-cloud-kms
+```
+
+### Example
+
+```ruby
+require "google/cloud/kms"
+
+# Create a client for a project and given credentials
+kms = Google::Cloud::Kms.new credentials: "/path/to/keyfile.json"
+
+# Where to create key rings
+key_ring_parent = kms.class.location_path "my-project", "us-central1"
+
+# Create a new key ring
+key_ring = kms.create_key_ring key_ring_parent, "my-ring", {}
+puts "Created at #{Time.new key_ring.create_time.seconds}"
+
+# Iterate over created key rings
+kms.list_key_rings(key_ring_parent).each do |key_ring|
+  puts "Found ring called #{key_ring.name}"
+end
 ```
 
 ### Next Steps

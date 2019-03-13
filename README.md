@@ -16,6 +16,7 @@ Availability (GA)](#versioning) quality level:
 
 * [BigQuery](#bigquery-ga) (GA)
 * [Cloud Datastore](#cloud-datastore-ga) (GA)
+* [Cloud Key Management Service](#cloud-key-management-service-ga) (GA)
 * [Stackdriver Logging](#stackdriver-logging-ga) (GA)
 * [Cloud Spanner API](#cloud-spanner-api-ga) (GA)
 * [Cloud Storage](#cloud-storage-ga) (GA)
@@ -31,7 +32,6 @@ This client supports the following Google Cloud Platform services at a
 * [Stackdriver Debugger](#stackdriver-debugger-beta) (Beta)
 * [Stackdriver Error Reporting](#stackdriver-error-reporting-beta) (Beta)
 * [Cloud Firestore](#cloud-firestore-beta) (Beta)
-* [Cloud Key Management Service](#cloud-key-management-service-beta) (Beta)
 * [Cloud Pub/Sub](#cloud-pubsub-beta) (Beta)
 * [Stackdriver Monitoring API](#stackdriver-monitoring-api-beta) (Beta)
 * [Stackdriver Trace](#stackdriver-trace-beta) (Beta)
@@ -50,6 +50,7 @@ This client supports the following Google Cloud Platform services at an
 * [Cloud Resource Manager](#cloud-resource-manager-alpha) (Alpha)
 * [Cloud Scheduler](#cloud-scheduler-alpha) (Alpha)
 * [Cloud Speech API](#cloud-speech-api-alpha) (Alpha)
+* [Cloud Talent Solutions API](#cloud-talent-solutions-api-alpha) (Alpha)
 * [Cloud Tasks API](#cloud-tasks-api-alpha) (Alpha)
 * [Cloud Text-To-Speech API](#cloud-text-to-speech-api-alpha) (Alpha)
 * [Cloud Vision API](#cloud-vision-api-alpha) (Alpha)
@@ -479,7 +480,7 @@ firestore.transaction do |tx|
 end
 ```
 
-### Cloud Key Management Service (Beta)
+### Cloud Key Management Service (GA)
 
 - [google-cloud-kms README](google-cloud-kms/README.md)
 - [google-cloud-kms API documentation](https://googleapis.github.io/google-cloud-ruby/docs/google-cloud-kms/latest)
@@ -490,6 +491,27 @@ end
 
 ```sh
 $ gem install google-cloud-kms
+```
+
+#### Preview
+
+```ruby
+require "google/cloud/kms"
+
+# Create a client for a project and given credentials
+kms = Google::Cloud::Kms.new credentials: "/path/to/keyfile.json"
+
+# Where to create key rings
+key_ring_parent = kms.class.location_path "my-project", "us-central1"
+
+# Create a new key ring
+key_ring = kms.create_key_ring key_ring_parent, "my-ring", {}
+puts "Created at #{Time.new key_ring.create_time.seconds}"
+
+# Iterate over created key rings
+kms.list_key_rings(key_ring_parent).each do |key_ring|
+  puts "Found ring called #{key_ring.name}"
+end
 ```
 
 ### Stackdriver Logging (GA)
@@ -846,6 +868,44 @@ file.download "/tasks/attachments/#{file.name}"
 # Copy the file to a backup bucket
 backup = storage.bucket "task-attachment-backups"
 file.copy backup, file.name
+```
+
+### Cloud Talent Solutions API (Alpha)
+
+- [google-cloud-talent README](google-cloud-talent/README.md)
+- [google-cloud-talent API documentation](https://googleapis.github.io/google-cloud-ruby/docs/google-cloud-talent/latest)
+- [google-cloud-talent on RubyGems](https://rubygems.org/gems/google-cloud-talent/)
+- [Google Cloud Talent Solutions documentation](https://cloud.google.com/talent-solution/docs)
+
+#### Quick Start
+
+```sh
+$ gem install google-cloud-talent
+```
+
+#### Preview
+
+```rb
+ require "google/cloud/talent"
+
+ require "google/cloud/talent"
+ job_service_client = Google::Cloud::Talent::JobService.new(version: :v4beta1)
+ formatted_parent = job_service_client.project_path("[PROJECT]")
+
+ # TODO: Initialize `filter`:
+ filter = ''
+ # Iterate over all results.
+ job_service_client.list_jobs(formatted_parent, filter).each do |element|
+   # Process element.
+ end
+
+ # Or iterate over results one page at a time.
+ job_service_client.list_jobs(formatted_parent, filter).each_page do |page|
+   # Process each page at a time.
+   page.each do |element|
+     # Process element.
+   end
+ end
 ```
 
 ### Cloud Tasks API (Alpha)
