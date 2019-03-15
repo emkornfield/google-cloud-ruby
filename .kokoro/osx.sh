@@ -28,6 +28,7 @@ function set_failed_status {
 }
 
 # Install/Use 2.5.5
+source /Users/kbuilder/.rvm/scripts/rvm
 rvm use 2.5.5 || (rvm install ruby-2.5.5 && rvm use 2.5.5)
 
 gem install bundler --version 1.17.3
