@@ -29,7 +29,7 @@ versions=(<%= ruby_versions.join " " %>)
 source /Users/kbuilder/.rvm/scripts/rvm
 
 if [ "$JOB_TYPE" = "presubmit" ]; then
-    (rvm use ${versions[-2]}) || (rvm install ${versions[-2]} && rvm use ${versions[-2]})
+    (rvm use ${versions[<%= ruby_versions.size - 1 %>]}) || (rvm install ${versions[<%= ruby_versions.size - 1 %>]} && rvm use ${versions[<%= ruby_versions.size - 1 %>]})
     gem install bundler --version 1.17.3
     gem update --system
     gem regenerate_binstubs
