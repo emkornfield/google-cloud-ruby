@@ -29,7 +29,7 @@ versions=(2.3.8 2.4.5 2.5.5 2.6.2)
 source /Users/kbuilder/.rvm/scripts/rvm
 
 if [ "$JOB_TYPE" = "presubmit" ]; then
-    (rvm use ${versions[3]}) || (rvm install ${versions[3]} && rvm use ${versions[3]})
+    (rvm use ${versions[2]} --default) || (rvm install ${versions[2]} && rvm use ${versions[2]} --default)
     gem install bundler --version 1.17.3
     gem update --system
     gem regenerate_binstubs
@@ -38,7 +38,7 @@ if [ "$JOB_TYPE" = "presubmit" ]; then
     (bundle update && bundle exec rake kokoro:presubmit) || set_failed_status
 else
     for version in "${versions[@]}"; do
-        (rvm use "$version") || (rvm install "$version" && rvm use "$version")
+        (rvm use "$version" --default) || (rvm install "$version" && rvm use "$version" --default)
         git fetch --depth=10000
         gem install bundler --version 1.17.3
         gem update --system
