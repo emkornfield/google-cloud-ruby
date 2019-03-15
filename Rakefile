@@ -5,7 +5,7 @@ require "erb"
 require "fileutils"
 require "timeout"
 
-KOKORO_RUBY_VERSIONS = ["2.3.8", "2.4.5", "2.5.3", "2.6.1"]
+KOKORO_RUBY_VERSIONS = ["2.3.8", "2.4.5", "2.5.4", "2.6.2"]
 
 task :bundleupdate do
   valid_gems.each do |gem|
@@ -651,7 +651,6 @@ namespace :kokoro do
       1
     end
   end
-  
 end
 
 def run_command_with_timeout command, timeout
@@ -716,7 +715,7 @@ def update_supported_ruby_versions
   File.open("./README.md", "r+") do |f|
     readme_text = f.read
   end
-  earliest_ruby = ruby_versions.first.split(".")[0...-1].join(".")
+  earliest_ruby = KOKORO_RUBY_VERSIONS.first.split(".")[0...-1].join(".")
   ruby_version_text = "These libraries are currently supported on Ruby "
   new_content = readme_text.gsub(
     /#{ruby_version_text}(.*)\+/,
