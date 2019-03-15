@@ -5,7 +5,7 @@ require "erb"
 require "fileutils"
 require "timeout"
 
-KOKORO_RUBY_VERSIONS = ["2.3.8", "2.4.5", "2.5.4", "2.6.2"]
+KOKORO_RUBY_VERSIONS = ["2.3.8", "2.4.5", "2.5.5", "2.6.2"]
 
 task :bundleupdate do
   valid_gems.each do |gem|
@@ -698,10 +698,6 @@ end
 
 def update_kokoro_ruby_versions
   ruby_versions = KOKORO_RUBY_VERSIONS
-  File.open("./.kokoro/build.sh", "w") do |f|
-    build_file = ERB.new(File.read("./.kokoro/templates/build.sh.erb"))
-    f.write(build_file.result(binding))
-  end
   ["ruby-multi", "ruby-release"].each do |docker_image|
     File.open("./.kokoro/docker/#{docker_image}/Dockerfile", "w") do |f|
       docker_file = ERB.new(File.read("./.kokoro/templates/#{docker_image}.Dockerfile.erb"))
