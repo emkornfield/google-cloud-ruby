@@ -27,7 +27,11 @@ function set_failed_status {
     EXIT_STATUS=1
 }
 
+# Install/Use 2.5.5
+rvm use 2.5.5 || (rvm install ruby-2.5.5 && rvm use 2.5.5)
+
 gem install bundler --version 1.17.3
+gem update --system
 
 if [ "$JOB_TYPE" = "nightly" ]; then
     (bundle update && bundle exec rake kokoro:nightly) || set_failed_status
