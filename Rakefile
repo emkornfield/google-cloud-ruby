@@ -704,6 +704,10 @@ def update_kokoro_ruby_versions
       f.write(docker_file.result(binding))
     end
   end
+  File.open("./.kokoro/osx.sh", "w") do |f|
+    docker_file = ERB.new(File.read("./.kokoro/templates/osx.sh.erb"))
+    f.write(docker_file.result(binding))
+  end
 end
 
 def update_supported_ruby_versions
