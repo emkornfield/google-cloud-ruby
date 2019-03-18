@@ -14,28 +14,43 @@ env | grep KOKORO
 
 cd github/google-cloud-ruby/
 
-# Temporary workaround for a known bundler+docker issue:
-# https://github.com/bundler/bundler/issues/6154
-export BUNDLE_GEMFILE=
-
 # Capture failures
 EXIT_STATUS=0 # everything passed
 function set_failed_status {
     EXIT_STATUS=1
 }
 
+echo "script started"
 echo $PATH
 rvm get head --auto-dotfiles
+echo "ran rvm auto-dotfiles"
 
 versions=(2.3.8 2.4.5 2.5.5 2.6.2)
+echo "set versions"
 
 if [ "$JOB_TYPE" = "presubmit" ]; then
-    (rvm use ${versions[2]}@global --default) || (rvm install ${versions[2]} && rvm use ${versions[2]}@global --default)
+    echo "recognized presubmit"
+    {
+      rvm use ${versions[2]}@global --default
+      echo "tried to use 2"
+    } || {
+      rvm install ${versions[2]}
+      echo "installed 2"
+      rvm use ${versions[2]}@global --default
+      echo "using 2"
+      echo $PATH
+      which bundler
+      which ruby
+      gem uninstall --force --silent bundler
+      echo "nuked bundler"
+    }
     gem install bundler --version 1.17.3
+    echo "installed bundler"
     echo $PATH
     which bundler
     which ruby
     gem update --system
+    echo "updated system"
     echo $PATH
     which bundler
     which ruby
