@@ -24,6 +24,9 @@ function set_failed_status {
     EXIT_STATUS=1
 }
 
+echo $PATH
+rvm get head --auto-dotfiles
+
 versions=(<%= ruby_versions.join " " %>)
 
 if [ "$JOB_TYPE" = "presubmit" ]; then

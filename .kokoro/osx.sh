@@ -24,6 +24,9 @@ function set_failed_status {
     EXIT_STATUS=1
 }
 
+echo $PATH
+rvm get head --auto-dotfiles
+
 versions=(2.3.8 2.4.5 2.5.5 2.6.2)
 
 if [ "$JOB_TYPE" = "presubmit" ]; then
