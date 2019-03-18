@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash --login
 
 # This file runs tests for merges, PRs, and nightlies.
 # There are a few rules for what tests are run:
@@ -26,8 +26,6 @@ function set_failed_status {
 
 versions=(2.3.8 2.4.5 2.5.5 2.6.2)
 
-source /Users/kbuilder/.rvm/scripts/rvm
-
 if [ "$JOB_TYPE" = "presubmit" ]; then
     (rvm use ${versions[2]}@global --default) || (rvm install ${versions[2]} && rvm use ${versions[2]}@global --default)
     gem install bundler --version 1.17.3
@@ -38,13 +36,6 @@ if [ "$JOB_TYPE" = "presubmit" ]; then
     echo $PATH
     which bundler
     which ruby
-    gem pristine --binstubs
-    echo $PATH
-    which bundler
-    which ruby
-    ruby --version
-    echo $PATH
-    which bundler
     (bundle update && bundle exec rake kokoro:presubmit) || set_failed_status
 else
     for version in "${versions[@]}"; do
