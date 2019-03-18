@@ -29,10 +29,7 @@ versions=(2.3.8 2.4.5 2.5.5 2.6.2)
 source /Users/kbuilder/.rvm/scripts/rvm
 
 if [ "$JOB_TYPE" = "presubmit" ]; then
-    (rvm use ${versions[2]}@global --default) || (rvm install ${versions[2]}@global && rvm use ${versions[2]}@global --default)
-    echo $PATH
-    which bundler
-    which ruby
+    (rvm use ${versions[2]}@global --default) || (rvm install ${versions[2]} && rvm use ${versions[2]}@global --default)
     gem install bundler --version 1.17.3
     echo $PATH
     which bundler
