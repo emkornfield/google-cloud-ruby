@@ -1,4 +1,4 @@
-#!/bin/bash --login
+#!/bin/bash
 
 # This file runs tests for merges, PRs, and nightlies.
 # There are a few rules for what tests are run:
