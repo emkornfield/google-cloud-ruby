@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash --login
 
 # This file runs tests for merges, PRs, and nightlies.
 # There are a few rules for what tests are run:
@@ -29,23 +29,23 @@ echo "ran rvm auto-dotfiles"
 
 versions=(2.3.8 2.4.5 2.5.5 2.6.2)
 echo "set versions"
+rvm_versions=$(rvm list rubies)
 
 if [ "$JOB_TYPE" = "presubmit" ]; then
+    version=${versions[2]}
+    echo "set version to $version"
     echo "recognized presubmit"
-    {
-      rvm use ${versions[2]}@global --default
-      echo "tried to use 2"
-    } || {
-      rvm install ${versions[2]}
-      echo "installed 2"
-      rvm use ${versions[2]}@global --default
-      echo "using 2"
-      echo $PATH
-      which bundler
-      which ruby
-      gem uninstall --force --silent bundler
-      echo "nuked bundler"
-    }
+    if [[ $rvm_versions == *$version* ]]; then
+      echo "found it, gonna use it"
+    else
+      echo "couldn't find it, gonna install it"
+      rvm install $version
+    fi
+    echo "installed it, gonna use it"
+    rvm use $version@global --default
+    echo "using it"
+    echo $PATH
+    which bundler
     gem install bundler --version 1.17.3
     echo "installed bundler"
     echo $PATH
@@ -59,7 +59,10 @@ if [ "$JOB_TYPE" = "presubmit" ]; then
     (bundle update && bundle exec rake kokoro:presubmit) || set_failed_status
 else
     for version in "${versions[@]}"; do
-        (rvm use "$version"@global --default) || (rvm install "$version" && rvm use "$version"@global --default)
+        if [[ $rvm_versions != *$version* ]]; then
+            rvm install "$version"
+        fi
+        rvm use "$version"@global --default
         git fetch --depth=10000
         gem install bundler --version 1.17.3
         gem update --system
