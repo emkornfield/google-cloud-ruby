@@ -1,4 +1,4 @@
-#!/bin/bash --login
+#!/bin/bash
 
 # This file runs tests for merges, PRs, and nightlies.
 # There are a few rules for what tests are run:
@@ -22,6 +22,8 @@ function set_failed_status {
 
 echo "script started"
 echo $PATH
+source ~/.rvm/scripts/rvm
+echo "rvm sourced"
 rvm get head --auto-dotfiles
 echo "ran rvm auto-dotfiles"
 
